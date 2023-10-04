@@ -9,7 +9,7 @@
 </div>
 
 ### Disclaimer
- This server is not optimized for a production environment, as certain race conditions can occur under high load and valid requests may be dropped. Use at your own risk.
+ This server is not optimized for a production environment, as certain race conditions may occur under high load and valid requests could be dropped. Use at your own risk.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
