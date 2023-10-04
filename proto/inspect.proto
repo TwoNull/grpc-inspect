@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package grpc_inspect;
+
+option go_package = "github.com/twonull/grpc-inspect/proto";
+
+
+service Inspect {
+    rpc SendInspect (InspectRequest) returns (InspectResponse) {}
+}
+
+message ItemInfo {
+    uint32 account_id = 1 [json_name = "accountid"];
+    uint64 item_id = 2 [json_name = "itemid"];
+    uint32 def_index = 3 [json_name = "defindex"];
+    uint32 paint_index = 4 [json_name = "paintindex"];
+    uint32 rarity = 5 [json_name = "rarity"];
+    uint32 quality = 6 [json_name = "quality"];
+    uint32 paint_wear = 7 [json_name = "paintwear"];
+    uint32 paint_seed = 8 [json_name = "paintseed"];
+    uint32 killeater_score_type = 9 [json_name = "killeaterscoretype"];
+    uint32 killeater_value = 10 [json_name = "killeatervalue"];
+    string custom_name = 11 [json_name = "customname"];
+    repeated Sticker stickers = 12 [json_name = "stickers"];
+    uint32 inventory = 13 [json_name = "inventory"];
+    uint32 origin = 14 [json_name = "origin"];
+    uint32 quest_id = 15 [json_name = "questid"];
+    uint32 drop_reason = 16 [json_name = "dropreason"];
+    uint32 music_index = 17 [json_name = "musicindex"];
+}
+
+message Sticker {
+    uint32 slot = 1 [json_name = "slot"];
+    uint32 sticker_id = 2 [json_name = "sticker_id"];
+    float wear = 3 [json_name = "wear"];
+    float scale = 4 [json_name = "scale"];
+    float rotation = 5 [json_name = "rotation"];
+    uint32 tint_id = 6 [json_name = "tint_id"];
+}
+
+message InspectRequest {
+    repeated uint64 fields = 1;
+}
+
+message InspectResponse {
+    ItemInfo item_info = 1;
+}
