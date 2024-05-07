@@ -7,6 +7,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	pb "github.com/twonull/grpc-inspect/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -30,9 +31,9 @@ func main() {
 		log.Fatalf("could not send req: %v", err)
 	}
 	// Raw ItemInfo data returned from Steam Protobufs. Fields with no value ignored.
-	log.Println("Item Info:", r.GetItemInfo())
+	spew.Dump(r.GetItempreview())
 	// Wear value converted from int to Float32
-	log.Println("Float Value:", getFv(r.GetItemInfo().GetPaintWear()))
+	log.Println("Float Value:", getFv(r.GetItempreview().GetPaintwear()))
 }
 
 func getFv(f uint32) string {

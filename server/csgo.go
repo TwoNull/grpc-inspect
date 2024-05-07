@@ -65,33 +65,36 @@ func (t *CSGO) handleEconPreviewDataBlockResponse(packet *gamecoordinator.GCPack
 	packet.ReadProtoMsg(data)
 	dataInfo := data.GetIteminfo()
 
-	itemInfo := &pb.ItemInfo{
-		AccountId:          dataInfo.GetAccountid(),
-		ItemId:             dataInfo.GetItemid(),
-		DefIndex:           dataInfo.GetDefindex(),
-		PaintIndex:         dataInfo.GetPaintindex(),
-		Rarity:             dataInfo.GetRarity(),
-		Quality:            dataInfo.GetQuality(),
-		PaintWear:          dataInfo.GetPaintwear(),
-		PaintSeed:          dataInfo.GetPaintseed(),
-		KilleaterScoreType: dataInfo.GetKilleaterscoretype(),
-		KilleaterValue:     dataInfo.GetKilleatervalue(),
-		CustomName:         dataInfo.GetCustomname(),
-		Inventory:          dataInfo.GetInventory(),
-		Origin:             dataInfo.GetOrigin(),
-		QuestId:            dataInfo.GetQuestid(),
-		DropReason:         dataInfo.GetDropreason(),
-		MusicIndex:         dataInfo.GetMusicindex(),
+	itemInfo := &pb.ItemPreview{
+		Accountid:          dataInfo.Accountid,
+		Itemid:             dataInfo.Itemid,
+		Defindex:           dataInfo.Defindex,
+		Paintindex:         dataInfo.Paintindex,
+		Rarity:             dataInfo.Rarity,
+		Quality:            dataInfo.Quality,
+		Paintwear:          dataInfo.Paintwear,
+		Paintseed:          dataInfo.Paintseed,
+		Killeaterscoretype: dataInfo.Killeaterscoretype,
+		Killeatervalue:     dataInfo.Killeatervalue,
+		Customname:         dataInfo.Customname,
+		Inventory:          dataInfo.Inventory,
+		Origin:             dataInfo.Origin,
+		Questid:            dataInfo.Questid,
+		Dropreason:         dataInfo.Dropreason,
+		Musicindex:         dataInfo.Musicindex,
+		Entindex:           dataInfo.Entindex,
 	}
 	stickers := dataInfo.GetStickers()
 	for _, sticker := range stickers {
-		itemInfo.Stickers = append(itemInfo.Stickers, &pb.Sticker{
-			Slot:      sticker.GetSlot(),
-			StickerId: sticker.GetStickerId(),
-			Wear:      sticker.GetWear(),
-			Scale:     sticker.GetScale(),
-			Rotation:  sticker.GetRotation(),
-			TintId:    sticker.GetTintId(),
+		itemInfo.Stickers = append(itemInfo.Stickers, &pb.ItemPreview_Sticker{
+			Slot:      sticker.Slot,
+			StickerId: sticker.StickerId,
+			Wear:      sticker.Wear,
+			Scale:     sticker.Scale,
+			Rotation:  sticker.Rotation,
+			TintId:    sticker.TintId,
+			OffsetX:   sticker.OffsetX,
+			OffsetY:   sticker.OffsetY,
 		})
 	}
 	t.client.Emit(itemInfo)

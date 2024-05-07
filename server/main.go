@@ -22,12 +22,12 @@ type Job struct {
 	A            uint64
 	D            uint64
 	M            uint64
-	ResponseChan chan *pb.ItemInfo
+	ResponseChan chan *pb.ItemPreview
 }
 
 type Worker struct {
 	Queue chan *Job
-	Res   chan *pb.ItemInfo
+	Res   chan *pb.ItemPreview
 	Ready bool
 }
 
@@ -49,7 +49,7 @@ func (s *InspectorServer) SendInspect(ctx context.Context, request *pb.InspectRe
 		return nil, errors.New("no available worker")
 	}
 
-	resChan := make(chan *pb.ItemInfo)
+	resChan := make(chan *pb.ItemPreview)
 
 	worker.Queue <- &Job{
 		S:            request.Fields[0],
@@ -70,7 +70,7 @@ func (s *InspectorServer) SendInspect(ctx context.Context, request *pb.InspectRe
 	}
 
 	return &pb.InspectResponse{
-		ItemInfo: answer,
+		Itempreview: answer,
 	}, nil
 }
 
@@ -107,7 +107,7 @@ func main() {
 	for i := 0; i < len(words); i++ {
 		service.Workers[i] = &Worker{
 			Queue: make(chan *Job),
-			Res:   make(chan *pb.ItemInfo),
+			Res:   make(chan *pb.ItemPreview),
 			Ready: false,
 		}
 		go service.startWorker(service.Workers[i], words[i][0], words[i][1])
@@ -143,18 +143,21 @@ func (s *InspectorServer) startWorker(worker *Worker, user string, pass string) 
 			switch e := event.(type) {
 			case *steam.ConnectedEvent:
 				client.Auth.LogOn(loginInfo)
+				log.Println("sent logon")
 			case *steam.LoggedOnEvent:
 				log.Println(user, "Login Success")
 				cs.SendHello()
 				cs.SetPlaying(true)
 				worker.Ready = true
-			case *pb.ItemInfo:
+			case *pb.ItemPreview:
 				worker.Res <- e
 			case steam.FatalErrorEvent:
 				log.Println(user, "Encountered Fatal Error", event)
 				close(worker.Queue)
 				close(worker.Res)
 				return
+			default:
+				continue
 			}
 		}
 	}()

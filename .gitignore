@@ -25,3 +25,6 @@ go.work
 
 # MacOS
 .DS_Store
+
+# Account lists
+accounts.txt

@@ -4,38 +4,40 @@ package grpc_inspect;
 
 option go_package = "github.com/twonull/grpc-inspect/proto";
 
-
 service Inspect {
     rpc SendInspect (InspectRequest) returns (InspectResponse) {}
 }
 
-message ItemInfo {
-    uint32 account_id = 1 [json_name = "accountid"];
-    uint64 item_id = 2 [json_name = "itemid"];
-    uint32 def_index = 3 [json_name = "defindex"];
-    uint32 paint_index = 4 [json_name = "paintindex"];
-    uint32 rarity = 5 [json_name = "rarity"];
-    uint32 quality = 6 [json_name = "quality"];
-    uint32 paint_wear = 7 [json_name = "paintwear"];
-    uint32 paint_seed = 8 [json_name = "paintseed"];
-    uint32 killeater_score_type = 9 [json_name = "killeaterscoretype"];
-    uint32 killeater_value = 10 [json_name = "killeatervalue"];
-    string custom_name = 11 [json_name = "customname"];
-    repeated Sticker stickers = 12 [json_name = "stickers"];
-    uint32 inventory = 13 [json_name = "inventory"];
-    uint32 origin = 14 [json_name = "origin"];
-    uint32 quest_id = 15 [json_name = "questid"];
-    uint32 drop_reason = 16 [json_name = "dropreason"];
-    uint32 music_index = 17 [json_name = "musicindex"];
-}
+message ItemPreview {
+	message Sticker {
+		optional uint32 slot = 1;
+		optional uint32 sticker_id = 2;
+		optional float wear = 3;
+		optional float scale = 4;
+		optional float rotation = 5;
+		optional uint32 tint_id = 6;
+		optional float offset_x = 7;
+		optional float offset_y = 8;
+	}
 
-message Sticker {
-    uint32 slot = 1 [json_name = "slot"];
-    uint32 sticker_id = 2 [json_name = "sticker_id"];
-    float wear = 3 [json_name = "wear"];
-    float scale = 4 [json_name = "scale"];
-    float rotation = 5 [json_name = "rotation"];
-    uint32 tint_id = 6 [json_name = "tint_id"];
+	optional uint32 accountid = 1;
+	optional uint64 itemid = 2;
+	optional uint32 defindex = 3;
+	optional uint32 paintindex = 4;
+	optional uint32 rarity = 5;
+	optional uint32 quality = 6;
+	optional uint32 paintwear = 7;
+	optional uint32 paintseed = 8;
+	optional uint32 killeaterscoretype = 9;
+	optional uint32 killeatervalue = 10;
+	optional string customname = 11;
+	repeated ItemPreview.Sticker stickers = 12;
+	optional uint32 inventory = 13;
+	optional uint32 origin = 14;
+	optional uint32 questid = 15;
+	optional uint32 dropreason = 16;
+	optional uint32 musicindex = 17;
+	optional int32 entindex = 18;
 }
 
 message InspectRequest {
@@ -43,5 +45,5 @@ message InspectRequest {
 }
 
 message InspectResponse {
-    ItemInfo item_info = 1;
+    ItemPreview itempreview = 1;
 }
